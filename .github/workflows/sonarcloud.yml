@@ -1,0 +1,44 @@
+name: SonarCloud analysis
+
+on:
+  push:
+    branches: [ "main" ] 
+  pull_request:
+    branches: [ "main" ] 
+  workflow_dispatch:
+
+permissions:
+  pull-requests: read 
+
+jobs:
+  sonar-check:
+    name: Sonar Check
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      # 1) BEGIN: SonarScanner for .NET 
+      - name: SonarScanner Begin
+        run: |
+          dotnet tool install --global dotnet-sonarscanner
+          echo "$env:USERPROFILE\.dotnet\tools" >> $env:GITHUB_PATH
+          dotnet sonarscanner begin `
+          /d:sonar.projectKey="8458697-ai_SonarCloud-DotNet-Demo" ` 
+          /d:sonar.organization="8458697-ai" ` 
+          /d:sonar.token="${{ secrets.SONAR_TOKEN }}" `
+          /d:sonar.qualitygate.wait=true
+        shell: pwsh
+      # 2) BUILD 
+      - name: Restore
+        run: dotnet restore NetSdrClient.sln
+      - name: Build
+        run: dotnet build NetSdrClient.sln -c Release --no-restore
+      # 3) END: SonarScanner 
+      - name: SonarScanner End
+        run: dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+        shell: pwsh
