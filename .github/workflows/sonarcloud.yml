@@ -1,5 +1,5 @@
 name: SonarCloud analysis
-
+# Final check to force Git update
 on:
   push:
     branches: [ "main" ] 
