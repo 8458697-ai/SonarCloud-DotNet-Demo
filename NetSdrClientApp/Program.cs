@@ -1,21 +1,19 @@
 using System;
-using System.Linq; // Зауваження для Sonar (Smell)
+using System.Linq; // Smell 1: Unused using
 
-namespace NetSdrClientApp
-{
-    public class Program
-    {
-        public string message = "Lab 2 Start"; // Зауваження для Sonar (Smell)
-
-        public static void Main(string[] args)
-        {
-            Console.WriteLine("Build fixed!");
-            
-            try {
-                // Пустий блок
+namespace NetSdrClientApp {
+    public class Program {
+        public string msg = "Hello"; // Smell 2: Public field
+        public static void Main(string[] args) {
+            int x = 5; // Smell 3: Unused variable
+            try { 
+                Console.WriteLine("Start"); 
             }
-            catch (Exception ex) { 
-                // Зауваження для Sonar: порожній catch і невикористаний ex
+            catch (Exception ex) { // Smell 4: Generic exception
+                // Smell 5: Empty catch
+            }
+            if (true) { // Smell 6: Always true
+                Console.WriteLine("Work");
             }
         }
     }
