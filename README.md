@@ -1,1 +1,1 @@
-# SonarCloud-DotNet-Demo
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=8458697-ai_SonarCloud-DotNet-Demo&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=8458697-ai_SonarCloud-DotNet-Demo)# SonarCloud-DotNet-Demo
