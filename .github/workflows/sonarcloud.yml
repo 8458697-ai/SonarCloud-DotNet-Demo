@@ -14,11 +14,9 @@ jobs:
         with:
           dotnet-version: '8.0.x'
       - name: Build and analyze
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: pwsh
         run: |
           dotnet tool install --global dotnet-sonarscanner
-          dotnet sonarscanner begin /k:"8458697-ai_SonarCloud-DotNet-Demo" /o:"8458697-ai" /d:sonar.token="$env:SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.dotnet.excludeTestProjects=true
+          dotnet sonarscanner begin /k:"8458697-ai_SonarCloud-DotNet-Demo" /o:"8458697-ai" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           dotnet build NetSdrClient.sln
-          dotnet sonarscanner end /d:sonar.token="$env:SONAR_TOKEN"
+          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
