@@ -1,24 +1,28 @@
 using System;
-using System.Linq; // Зауваження 1: Невикористаний using
+using System.Linq; // 1. Smell: Невикористаний using
 
 namespace NetSdrClientApp
 {
-    public class Program // Велика літера 'P' виправляє помилку збірки
+    public class Program // ВИПРАВЛЕНО: Велика літера 'P' дозволить проекту зібратися
     {
-        public string message = "Hello"; // Зауваження 2: Публічне поле
+        public string message = "Hello Sonar!"; // 2. Smell: Публічне поле замість властивості
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            int unusedVar = 10; // Зауваження 3: Невикористана змінна
+            int unusedVariable = 10; // 3. Smell: Змінна, яка ніде не використовується
             
-            try {
-                Console.WriteLine("Starting...");
-            }
-            catch (Exception ex) { // Зауваження 4: Порожній catch
-            }
+            bool constantCondition = true; // 4. Smell: Змінна, що веде до завжди істинної умови
 
-            if (1 == 1) { // Зауваження 5: Умова, яка завжди істинна
-                 Console.WriteLine("Test");
+            try 
+            {
+                if (constantCondition) // 5. Smell: Умова завжди істинна
+                {
+                    Console.WriteLine("Everything is working!");
+                }
+            }
+            catch (Exception ex) // 6. Smell: Перехоплення загального Exception без логування
+            {
+                // 7. Smell: Порожній блок catch
             }
         }
     }
