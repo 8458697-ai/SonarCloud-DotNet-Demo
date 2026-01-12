@@ -19,6 +19,6 @@ jobs:
         shell: pwsh
         run: |
           dotnet tool install --global dotnet-sonarscanner
-          dotnet sonarscanner begin /k:"8458697-ai_SonarCloud-DotNet-Demo" /o:"8458697-ai" /d:sonar.token="$env:SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.qualitygate.wait=true
+          dotnet sonarscanner begin /k:"8458697-ai_SonarCloud-DotNet-Demo" /o:"8458697-ai" /d:sonar.token="$env:SONAR_TOKEN" /d:sonar.host.url="https://sonarcloud.io" 
           dotnet build NetSdrClient.sln
           dotnet sonarscanner end /d:sonar.token="$env:SONAR_TOKEN"
