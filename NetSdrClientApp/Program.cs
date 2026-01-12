@@ -1,25 +1,17 @@
 using System;
-using System.Linq; // Smell 1: Unused using
+using System.Linq; // Smell 1
 
 namespace NetSdrClientApp
 {
-    public class Program // Виправлено: Велика літера 'P'
+    public class Program // Виправлено на велику 'P' для успішного Build
     {
-        public string message = "Hello"; // Smell 2: Public field
-
+        public string message = "Hello"; // Smell 2
         static void Main(string[] args)
         {
-            int unusedVariable = 10; // Smell 3: Unused variable
-            
-            try {
-                Console.WriteLine("Starting...");
-            }
-            catch (Exception ex) { // Smell 4: Empty catch
-            }
-
-            if (true) { // Smell 5: Always true condition
-                 Console.WriteLine("Test");
-            }
+            int unusedVar = 10; // Smell 3
+            try { Console.WriteLine("Build success"); }
+            catch (Exception ex) { } // Smell 4
+            if (true) { Console.WriteLine("Test"); } // Smell 5
         }
     }
 }
