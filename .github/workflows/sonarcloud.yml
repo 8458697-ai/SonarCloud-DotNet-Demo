@@ -1,4 +1,5 @@
-name: SonarCloud Analysis
+name: SonarCloud analysis
+
 on:
   push:
     branches: [ "master", "main" ]
@@ -7,25 +8,28 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Build and analyze
+  sonar-check:
+    name: Sonar Check
     runs-on: windows-latest
     steps:
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: 17
-          distribution: 'zulu'
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Install SonarCloud scanner
-        shell: pwsh
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: SonarScanner Begin
         run: |
-          dotnet tool update dotnet-sonarscanner --global
-      - name: Build and analyze
+          dotnet tool install --global dotnet-sonarscanner
+          dotnet sonarscanner begin /k:"8458697-ai_SonarCloud-DotNet-Demo" /o:"8458697-ai" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.qualitygate.wait=true
         shell: pwsh
-        run: |
-          dotnet sonarscanner begin /k:"8458697-ai_SonarCloud-DotNet-Demo" /o:"8458697-ai" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build
-          dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+
+      - name: Build
+        run: dotnet build
+
+      - name: SonarScanner End
+        run: dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+        shell: pwsh
