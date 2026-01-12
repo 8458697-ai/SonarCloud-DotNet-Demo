@@ -3,7 +3,7 @@ using System.Linq; // 1. Smell: Невикористаний using
 
 namespace NetSdrClientApp
 {
-    public class program // 2. Smell: Назва класу має бути з великої літери (Program)
+    public class Program // 2. Smell: Назва класу має бути з великої літери (Program)
     {
         public string message = "Hello"; // 3. Smell: Публічне поле замість властивості
 
