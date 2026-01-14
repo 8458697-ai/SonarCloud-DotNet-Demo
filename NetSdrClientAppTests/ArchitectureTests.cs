@@ -6,14 +6,15 @@ namespace NetSdrClientAppTests;
 public class ArchitectureTests
 {
     [Fact]
-    public void Program_ShouldBeInCorrectNamespace()
+    public void AllClasses_ShouldBeInCorrectNamespace()
     {
-        // Перевіряємо, чи всі класи в проекті Клієнта знаходяться в правильному просторі імен
+        // Беремо всі типи з проекту Клієнта
         var result = Types.InAssembly(typeof(NetSdrClientApp.Program).Assembly)
             .Should()
             .ResideInNamespace("NetSdrClientApp")
             .GetResult();
 
+        // Якщо хоча б один клас (як ваш з WrongNamespace) не там — тест впаде
         Assert.True(result.IsSuccessful, "Архітектурна помилка: Знайдено класи поза межами NetSdrClientApp!");
     }
 }
