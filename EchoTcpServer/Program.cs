@@ -1,20 +1,24 @@
 using System;
 
-namespace EchoTcpServer {
+namespace EchoServer {
     public static class Program {
-        private static readonly string _msg = "Server Echo"; // Змінили лише текст повідомлення
         public static void Main(string[] args) {
-            
-            // Цей блок try-catch — точна копія вашого клієнта
-            try { 
-                Console.WriteLine(_msg); 
+            ExecuteSharedLogic("Server");
+        }
+
+        // Цей метод — точна копія того, що в клієнті
+        public static void ExecuteSharedLogic(string context) {
+            Console.WriteLine("--- Start of Shared Logic ---");
+            try {
+                for (int i = 0; i < 10; i++) {
+                    Console.WriteLine($"Action {i} in context: {context}");
+                    if (i % 2 == 0) Console.WriteLine("Processing even step...");
+                }
             }
             catch (Exception ex) {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("Error occurred: " + ex.Message);
             }
-             
-            // Цей рядок теж такий самий
-            Console.WriteLine("Work");
+            Console.WriteLine("--- End of Shared Logic ---");
         }
     }
 }
