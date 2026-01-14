@@ -1,26 +1,51 @@
-name: SonarCloud analysis
+name: SonarCloud
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
-  workflow_dispatch:
+    types: [opened, synchronize, reopened]
 jobs:
-  sonar-check:
+  build:
+    name: Build and analyze
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'zulu'
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
         with:
-          dotnet-version: '8.0.x'
-      - name: Build and analyze
+          path: ~\sonar\cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Install SonarCloud scanner
         shell: pwsh
         run: |
           dotnet tool install --global dotnet-sonarscanner
-          echo "$env:USERPROFILE\.dotnet\tools" >> $env:GITHUB_PATH
-          dotnet sonarscanner begin /k:"8458697-ai_SonarCloud-DotNet-Demo" /o:"8458697-ai" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.qualitygate.wait=false
-          dotnet build NetSdrClient.sln -c Release
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        shell: pwsh
+        run: |
+          dotnet sonarscanner begin /k:"8458697-ai_SonarCloud-DotNet-Demo" /o:"8458697-ai" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+          
+          dotnet build NetSdrClient.sln --configuration Release
+          
+          # Запуск тестів та створення звіту про покриття
+          dotnet test NetSdrClient.sln --collect:"Code Coverage" --results-directory ./TestResults
+          
+          # Конвертація звіту для SonarCloud (важливо для відображення відсотків)
+          Get-ChildItem -Path ./TestResults -Filter "*.coverage" -Recurse | % {
+            $path = $_.FullName
+            dotnet tool install --global dotnet-coverage
+            dotnet-coverage merge $path --output coverage.xml --output-format xml
+          }
+
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
