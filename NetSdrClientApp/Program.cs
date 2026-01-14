@@ -1,6 +1,6 @@
 using System;
 
-namespace WrongNamespace {
+namespace WrongNamespace { // ТЕСТ МАЄ ВПАСТИ ЧЕРЕЗ ЦЕЙ РЯДОК
     public static class Program {
         public static void Main(string[] args) {
             ExecuteClientOperations();
@@ -11,9 +11,6 @@ namespace WrongNamespace {
             try {
                 for (int i = 0; i < 10; i++) {
                     Console.WriteLine("Client Action #" + i);
-                    if (i % 2 == 0) {
-                        Console.WriteLine("Log: Even step detected.");
-                    }
                 }
             }
             catch (Exception ex) {
