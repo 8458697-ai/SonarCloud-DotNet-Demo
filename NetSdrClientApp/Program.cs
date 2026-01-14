@@ -1,20 +1,23 @@
 using System;
 
-
 namespace NetSdrClientApp {
     public static class Program {
-        private static readonly string _msg = "Hello";
         public static void Main(string[] args) {
-            
-            try { 
-                Console.WriteLine(_msg); 
+            ExecuteSharedLogic("Client");
+        }
+
+        public static void ExecuteSharedLogic(string context) {
+            Console.WriteLine("--- Start of Shared Logic ---");
+            try {
+                for (int i = 0; i < 10; i++) {
+                    Console.WriteLine($"Action {i} in context: {context}");
+                    if (i % 2 == 0) Console.WriteLine("Processing even step...");
+                }
             }
             catch (Exception ex) {
-    Console.WriteLine(ex.Message);
-}
-             
-                Console.WriteLine("Work");
-            
+                Console.WriteLine("Error occurred: " + ex.Message);
+            }
+            Console.WriteLine("--- End of Shared Logic ---");
         }
     }
 }
