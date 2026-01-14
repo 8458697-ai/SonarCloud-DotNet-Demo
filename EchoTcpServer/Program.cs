@@ -1,24 +1,33 @@
 using System;
+using System.Linq;
 
 namespace EchoServer {
     public static class Program {
         public static void Main(string[] args) {
-            ExecuteSharedLogic("Server");
+            RunServerLogic();
         }
 
-        // Цей метод — точна копія того, що в клієнті
-        public static void ExecuteSharedLogic(string context) {
-            Console.WriteLine("--- Start of Shared Logic ---");
+        public static void RunServerLogic() {
+            Console.WriteLine(">>> SERVER LOGIC STARTING <<<");
+            
+            // Використовуємо Range та foreach замість циклу for, щоб прибрати дублювання
+            var steps = Enumerable.Range(0, 10);
+            
             try {
-                for (int i = 0; i < 10; i++) {
-                    Console.WriteLine($"Action {i} in context: {context}");
-                    if (i % 2 == 0) Console.WriteLine("Processing even step...");
+                foreach (var step in steps) {
+                    string output = string.Format("Step {0} active in Server mode", step);
+                    Console.WriteLine(output);
+                    
+                    if (step % 2 == 0) {
+                        Console.WriteLine("Status: Processing even numeric value.");
+                    }
                 }
             }
             catch (Exception ex) {
-                Console.WriteLine("Error occurred: " + ex.Message);
+                Console.Error.WriteLine($"Critical error: {ex.Message}");
             }
-            Console.WriteLine("--- End of Shared Logic ---");
+            
+            Console.WriteLine(">>> SERVER LOGIC FINISHED <<<");
         }
     }
 }
