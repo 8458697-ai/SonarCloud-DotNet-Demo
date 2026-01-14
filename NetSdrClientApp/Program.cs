@@ -9,9 +9,9 @@ namespace NetSdrClientApp {
             try { 
                 Console.WriteLine(_msg); 
             }
-            catch (Exception ex) { // Smell 4: Generic exception
-                // Smell 5: Empty catch
-            }
+            catch (Exception ex) {
+    Console.WriteLine(ex.Message);
+}
             if (true) { // Smell 6: Always true
                 Console.WriteLine("Work");
             }
