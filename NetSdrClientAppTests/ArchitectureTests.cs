@@ -6,15 +6,15 @@ namespace NetSdrClientAppTests;
 public class ArchitectureTests
 {
     [Fact]
-    public void AllClasses_MustBeInCorrectNamespace()
+    public void NoClassesShouldBeInWrongNamespace()
     {
-        // Отримуємо всі типи з вашої збірки (навіть якщо вони у WrongNamespace)
+        // Перевіряємо, щоб у проекті НЕ БУЛО простору імен WrongNamespace
         var result = Types.InAssembly(typeof(WrongNamespace.Program).Assembly)
-            .Should()
-            .ResideInNamespace("NetSdrClientApp")
+            .ShouldNot()
+            .ResideInNamespace("WrongNamespace")
             .GetResult();
 
-        // Тест впаде, якщо знайде хоча б один тип поза NetSdrClientApp
-        Assert.True(result.IsSuccessful, "Архітектурна помилка: Знайдено класи у неправильному namespace!");
+        // Оскільки у вас в Program.cs саме WrongNamespace, тест ПРОВАЛИТЬСЯ
+        Assert.True(result.IsSuccessful, "Помилка! Знайдено заборонений простір імен WrongNamespace");
     }
 }
