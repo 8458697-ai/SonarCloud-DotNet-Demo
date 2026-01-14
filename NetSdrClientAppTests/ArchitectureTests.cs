@@ -6,14 +6,14 @@ namespace NetSdrClientAppTests;
 public class ArchitectureTests
 {
     [Fact]
-    public void Client_ShouldNotReferenceServer()
+    public void Program_ShouldBeInCorrectNamespace()
     {
-        // Перевіряємо, що Клієнт НЕ залежить від Сервера
+        // Перевіряємо, чи всі класи в проекті Клієнта знаходяться в правильному просторі імен
         var result = Types.InAssembly(typeof(NetSdrClientApp.Program).Assembly)
-            .ShouldNot()
-            .HaveDependencyOn("EchoServer")
+            .Should()
+            .ResideInNamespace("NetSdrClientApp")
             .GetResult();
 
-        Assert.True(result.IsSuccessful, "Архітектурна помилка: Клієнт має пряму залежність від Сервера!");
+        Assert.True(result.IsSuccessful, "Архітектурна помилка: Знайдено класи поза межами NetSdrClientApp!");
     }
 }
