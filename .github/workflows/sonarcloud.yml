@@ -34,14 +34,18 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: pwsh
        run: |
+          # 1. Встановлення інструментів
           dotnet tool install --global dotnet-sonarscanner
           dotnet tool install --global dotnet-coverage
           
+          # 2. Початок сканування
           dotnet sonarscanner begin /k:"8458697-ai_SonarCloud-DotNet-Demo" /o:"8458697-ai" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
           
+          # 3. Збірка проекту
           dotnet build NetSdrClient.sln --configuration Release
           
-          # Запуск тестування з прямою генерацією xml звіту
-          dotnet-coverage collect "dotnet test NetSdrClient.sln" -f xml -o "coverage.xml"
+          # 4. Запуск тестів та збір покриття
+          dotnet-coverage collect "dotnet test NetSdrClient.sln --configuration Release" -f xml -o "coverage.xml"
           
+          # 5. Завершення сканування
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
