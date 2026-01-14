@@ -5,7 +5,7 @@ namespace NetSdrClientApp {
     public class Program {
         private string _msg = "Hello"; // Smell 2: Public field
         public static void Main(string[] args) {
-            int x = 5; // Smell 3: Unused variable
+            
             try { 
                 Console.WriteLine("Start"); 
             }
