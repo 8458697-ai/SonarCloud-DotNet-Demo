@@ -3,7 +3,7 @@ using System.Linq; // Smell 1: Unused using
 
 namespace NetSdrClientApp {
     public class Program {
-        public string msg = "Hello"; // Smell 2: Public field
+        private string _msg = "Hello"; // Smell 2: Public field
         public static void Main(string[] args) {
             int x = 5; // Smell 3: Unused variable
             try { 
