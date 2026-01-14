@@ -2,7 +2,7 @@ using System;
 
 
 namespace NetSdrClientApp {
-    public class Program {
+    public static class Program {
         private static readonly string _msg = "Hello";
         public static void Main(string[] args) {
             
@@ -12,9 +12,9 @@ namespace NetSdrClientApp {
             catch (Exception ex) {
     Console.WriteLine(ex.Message);
 }
-            if (true) { // Smell 6: Always true
+             
                 Console.WriteLine("Work");
-            }
+            
         }
     }
 }
