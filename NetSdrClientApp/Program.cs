@@ -3,11 +3,11 @@ using System;
 
 namespace NetSdrClientApp {
     public class Program {
-        private string _msg = "Hello"; // Smell 2: Public field
+        private static readonly string _msg = "Hello";
         public static void Main(string[] args) {
             
             try { 
-                Console.WriteLine("Start"); 
+                Console.WriteLine(_msg); 
             }
             catch (Exception ex) { // Smell 4: Generic exception
                 // Smell 5: Empty catch
