@@ -33,19 +33,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: pwsh
-        run: |
+       run: |
+          dotnet tool install --global dotnet-sonarscanner
+          dotnet tool install --global dotnet-coverage
+          
           dotnet sonarscanner begin /k:"8458697-ai_SonarCloud-DotNet-Demo" /o:"8458697-ai" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
           
           dotnet build NetSdrClient.sln --configuration Release
           
-          # Запуск тестів та створення звіту про покриття
-          dotnet test NetSdrClient.sln --collect:"Code Coverage" --results-directory ./TestResults
+          # Запуск тестування з прямою генерацією xml звіту
+          dotnet-coverage collect "dotnet test NetSdrClient.sln" -f xml -o "coverage.xml"
           
-          # Конвертація звіту для SonarCloud (важливо для відображення відсотків)
-          Get-ChildItem -Path ./TestResults -Filter "*.coverage" -Recurse | % {
-            $path = $_.FullName
-            dotnet tool install --global dotnet-coverage
-            dotnet-coverage merge $path --output coverage.xml --output-format xml
-          }
-
           dotnet sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
